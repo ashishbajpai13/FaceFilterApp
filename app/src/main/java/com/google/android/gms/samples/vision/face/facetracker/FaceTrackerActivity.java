@@ -89,7 +89,6 @@ public final class FaceTrackerActivity extends AppCompatActivity implements View
     private ImageView ivResultView;
     private RelativeLayout imageLayout;
     private Bitmap bitmap = null;
-    private Rect destBounds;
     private List<Integer> drawableList = new ArrayList<>();
     private FaceDetector faceDetector;
 
@@ -380,8 +379,8 @@ public final class FaceTrackerActivity extends AppCompatActivity implements View
             float x2 = x1 + thisFace.getWidth();
             float y2 = y1 + thisFace.getHeight();
             Bitmap mBitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), resId);
-            this.destBounds = new Rect((int) (x1), (int) y1 - 180, (int) (x2), (int) (y2 + 200));
-            tempCanvas.drawBitmap(mBitmap, null, destBounds, null);
+            tempCanvas.drawBitmap(mBitmap, null,
+                    new Rect((int) (x1), (int) y1 - 180, (int) (x2), (int) (y2 + 200)), null);
         }
         this.bitmap = tempBitmap;
         myImageView.setImageDrawable(new BitmapDrawable(getResources(),tempBitmap));
@@ -457,9 +456,6 @@ public final class FaceTrackerActivity extends AppCompatActivity implements View
         public void onUpdate(FaceDetector.Detections<Face> detectionResults, Face face) {
             mOverlay.add(mFaceGraphic);
             mFaceGraphic.updateFace(face);
-            destBounds = mFaceGraphic.getDestBounds();
-            calculatePos(mFaceGraphic.getCanvas(), face);
-
         }
 
         /**
@@ -480,9 +476,5 @@ public final class FaceTrackerActivity extends AppCompatActivity implements View
         public void onDone() {
             mOverlay.remove(mFaceGraphic);
         }
-    }
-
-    private void calculatePos(Canvas canvas, Face face) {
-
     }
 }

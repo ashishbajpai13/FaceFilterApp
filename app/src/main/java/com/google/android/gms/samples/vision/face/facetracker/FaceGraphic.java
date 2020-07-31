@@ -58,8 +58,6 @@ class FaceGraphic extends GraphicOverlay.Graphic {
     private int mFaceId;
     private float mFaceHappiness;
     private Context mCtx;
-    private Rect destBounds;
-    private Canvas canvas;
     public static int resId = 0;
 
     public FaceGraphic(Context ctx, GraphicOverlay overlay) {
@@ -102,9 +100,6 @@ class FaceGraphic extends GraphicOverlay.Graphic {
         if (face == null) {
             return;
         }
-
-        this.canvas = canvas;
-
         // Draws a circle at the position of the detected face, with the face's track id below.
         float x = translateX(face.getPosition().x + face.getWidth() / 2);
         float y = translateY(face.getPosition().y + face.getHeight() / 2);
@@ -134,18 +129,9 @@ class FaceGraphic extends GraphicOverlay.Graphic {
             float top = y - yOffset;
             float right = x + xOffset;
             float bottom = y + yOffset;
-
-            this.destBounds = new Rect((int) (left), (int) top - 180, (int) (right), (int) (bottom + 200));
-            canvas.drawBitmap(mBitmap, null, destBounds, null);
+            canvas.drawBitmap(mBitmap, null,
+                    new Rect((int) (left), (int) top - 180, (int) (right), (int) (bottom + 200)), null);
 //        canvas.drawRect(left, top, right, bottom, mBoxPaint);
         }
-    }
-
-    public Rect getDestBounds() {
-        return destBounds;
-    }
-
-    public Canvas getCanvas() {
-        return canvas;
     }
 }
